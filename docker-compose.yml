@@ -1,18 +1,28 @@
 version: '2'
 services:
-  mysql:
-    build: ./mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: mysql
+  app:
+    container_name: app
+    image: fatherlinux/centos5-base
     volumes:
-      - db:/var/lib/mysql
+      - ./www:/var/www/html
+    tty: true
+    command: /bin/bash
   php:
+    container_name: php
     build: ./php
     ports:
       - '8080:80'
-    volumes:
-      - ./html:/var/www/html
+      - '443:443'
+    volumes_from:
+      - app
     depends_on:
       - mysql
-volumes:
-  db:
+      - redis
+  mysql:
+    container_name: mysql
+    build: ./mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql
+  redis:
+    container_name: redis
+    build: ./redis
