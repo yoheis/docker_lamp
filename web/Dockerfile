@@ -1,7 +1,7 @@
 #
 # Apache + PHP
 #
-# 2015-06-22
+# 2016-12-05
 #   CentOS 6.6 + epel,remi,rpmforge
 #   Apache 2.2.15
 #   PHP 5.4.45
@@ -34,13 +34,9 @@ RUN yum install --enablerepo=epel -y libmcrypt && \
 RUN yum install --enablerepo=remi -y php php-devel php-gd php-mbstring php-mcrypt php-mysqlnd php-pear php-xml php-opcache && \
     yum clean all
 
-# modify /etc/php.ini
-RUN sed -i -e "s/;date.timezone *=.*$/date.timezone = Asia\/Tokyo/" /etc/php.ini
-
 ENV WEBAPP_ROOT /webapp
 
-ADD ./index.html /webapp/public/index.html
-ADD ./phpinfo.php /webapp/public/phpinfo.php
+ADD ./php.ini /etc/php.ini
 
 EXPOSE 80
 
